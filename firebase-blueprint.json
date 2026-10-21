@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information for registered merchants and store owners",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 512 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "businessName": { "type": "string", "maxLength": 128 },
+        "industry": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["uid", "email"]
+    },
+    "StoreProduct": {
+      "title": "StoreProduct",
+      "description": "Merchant product catalogue items stored in Firestore",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 100 },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "stock": { "type": "integer" },
+        "sku": { "type": "string", "maxLength": 64 },
+        "image": { "type": "string", "maxLength": 1000 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "tags": { "type": "array" },
+        "featured": { "type": "boolean" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "price", "stock", "userId"]
+    },
+    "StoreFaq": {
+      "title": "StoreFaq",
+      "description": "Store FAQs and policy documents used for AI grounding",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "category": { "type": "string", "maxLength": 64 },
+        "question": { "type": "string", "maxLength": 500 },
+        "answer": { "type": "string", "maxLength": 2500 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "category", "question", "answer", "userId"]
+    },
+    "StoreOrder": {
+      "title": "StoreOrder",
+      "description": "Merchant orders logged and trackable on WhatsApp",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "maxLength": 64 },
+        "customerName": { "type": "string", "maxLength": 128 },
+        "customerPhone": { "type": "string", "maxLength": 64 },
+        "itemsSummary": { "type": "string", "maxLength": 2000 },
+        "total": { "type": "number" },
+        "status": { "type": "string", "maxLength": 64 },
+        "trackingCode": { "type": "string", "maxLength": 128 },
+        "estimatedDelivery": { "type": "string", "maxLength": 128 },
+        "courier": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["orderNumber", "customerName", "itemsSummary", "total", "status", "userId"]
+    },
+    "StoreAbandonedCart": {
+      "title": "StoreAbandonedCart",
+      "description": "Abandoned checkout records for automated follow-up recovery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 128 },
+        "customerPhone": { "type": "string", "maxLength": 64 },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "abandonedAt": { "type": "string", "maxLength": 64 },
+        "hoursAgo": { "type": "number" },
+        "status": { "type": "string", "maxLength": 64 },
+        "lastFollowupMessage": { "type": "string", "maxLength": 2000 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "customerName", "customerPhone", "totalAmount", "status", "userId"]
+    },
+    "StoreLead": {
+      "title": "StoreLead",
+      "description": "CRM leads captured through WhatsApp conversations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 128 },
+        "phone": { "type": "string", "maxLength": 64 },
+        "avatar": { "type": "string", "maxLength": 1000 },
+        "stage": { "type": "string", "maxLength": 64 },
+        "intentScore": { "type": "number" },
+        "sentiment": { "type": "string", "maxLength": 64 },
+        "lastMessage": { "type": "string", "maxLength": 2000 },
+        "lastMessageTime": { "type": "string", "maxLength": 64 },
+        "unreadCount": { "type": "number" },
+        "tags": { "type": "array" },
+        "assignedAgent": { "type": "string", "maxLength": 64 },
+        "estimatedValue": { "type": "number" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "stage", "intentScore", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User merchant profile"
+    },
+    "/users/{userId}/products/{productId}": {
+      "schema": { "$ref": "#/entities/StoreProduct" },
+      "description": "User specific product catalogue items"
+    },
+    "/users/{userId}/faqs/{faqId}": {
+      "schema": { "$ref": "#/entities/StoreFaq" },
+      "description": "User specific FAQ and knowledge base items"
+    },
+    "/users/{userId}/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/StoreOrder" },
+      "description": "User specific customer orders"
+    },
+    "/users/{userId}/abandoned_carts/{cartId}": {
+      "schema": { "$ref": "#/entities/StoreAbandonedCart" },
+      "description": "User specific abandoned checkouts"
+    },
+    "/users/{userId}/leads/{leadId}": {
+      "schema": { "$ref": "#/entities/StoreLead" },
+      "description": "User specific CRM sales leads"
+    }
+  }
+}

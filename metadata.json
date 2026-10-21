@@ -1,0 +1,10 @@
+{
+  "name": "WhatsSales AI - WhatsApp Sales Assistant",
+  "description": "AI WhatsApp Sales Assistant that answers customer questions, recommends products, recovers abandoned orders, and converts enquiries into revenue.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"],
+
+  "devDependencies": {
+
+}
+}
